@@ -14,6 +14,7 @@
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     
     <style>
+        /* --- CSS Variables and Base Styles --- */
         :root {
             --primary-color: #4A90E2;
             --primary-hover: #357ABD;
@@ -40,8 +41,10 @@
             color: var(--text-primary);
             display: flex;
             min-height: 100vh;
+            line-height: 1.6;
         }
-
+        
+        /* --- Main App Layout --- */
         .app-wrapper {
             display: flex;
             width: 100%;
@@ -128,7 +131,7 @@
             background-color: var(--panel-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 30px;
+            padding: 25px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card:hover {
@@ -136,53 +139,100 @@
         }
         .card-header {
             margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
             font-size: 18px;
             font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Generator Styles */
+        /* * --- IMPROVEMENT: Responsive Grid Layout ---
+         * Using auto-fit allows the grid to automatically adjust the number of columns
+         * based on the available width, preventing horizontal scroll.
+         * The minimum width for each column is set to 320px.
+        */
         #generator-grid {
-             grid-template-columns: minmax(280px, 1fr) minmax(350px, 1.5fr) minmax(300px, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         }
+
+        /* --- Form Elements and Controls --- */
         textarea {
-            width: 100%; padding: 15px; font-size: 16px; font-family: 'Vazir';
-            border-radius: 8px; border: 1px solid var(--border-color);
-            resize: vertical; min-height: 140px;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-family: 'Vazir', sans-serif;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            resize: vertical;
+            min-height: 140px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         textarea:focus {
-            outline: none; border-color: var(--primary-color);
+            outline: none;
+            border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
-        .form-section { margin-top: 30px; }
+        .form-section { margin-top: 25px; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .option-item label { display: block; font-size: 14px; margin-bottom: 8px; color: var(--text-secondary); }
-        .option-item select, .option-item input[type="text"] {
-            width: 100%; padding: 10px; font-size: 14px; font-family: 'Vazir';
-            border-radius: 8px; border: 1px solid var(--border-color);
+        .option-item select, .option-item input[type="text"], .option-item input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            font-family: 'Vazir', sans-serif;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
             background-color: #fff;
         }
         .logo-uploader {
-            padding: 15px; border: 2px dashed var(--border-color); border-radius: 8px;
-            text-align: center; cursor: pointer; transition: border-color 0.2s;
+            padding: 15px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
         }
         .logo-uploader:hover { border-color: var(--primary-color); }
-        .logo-uploader span { color: var(--text-secondary); }
+        .logo-uploader span { color: var(--text-secondary); font-size: 14px; }
         #logo-input { display: none; }
+        
         .logo-preview-container {
-            display: none; align-items: center; gap: 15px;
-            padding: 10px; background-color: #F9FAFB; border-radius: 8px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            background-color: #F9FAFB;
+            border-radius: 8px;
+            margin-top: 10px;
         }
-        .logo-preview-container img { width: 50px; height: 50px; object-fit: contain; }
-        .logo-preview-container span { flex-grow: 1; text-align: right; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+        .logo-preview-container img { width: 50px; height: 50px; object-fit: contain; border-radius: 4px; }
+        .logo-preview-container span {
+            flex-grow: 1;
+            text-align: right;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
         #remove-logo-btn {
-            background: none; border: none; cursor: pointer;
-            width: 24px; height: 24px; padding: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
         }
-        #remove-logo-btn svg { fill: var(--text-secondary); transition: fill 0.2s; }
+        #remove-logo-btn svg { width: 20px; height: 20px; fill: var(--text-secondary); transition: fill 0.2s; }
         #remove-logo-btn:hover svg { fill: var(--danger-color); }
 
-        .toggle-switch { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-top: 1px solid var(--border-color); margin-top: 20px;}
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 20px;
+        }
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
@@ -190,74 +240,99 @@
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Viewer Styles */
+        /* --- Viewer and Buttons --- */
         .viewer-card { text-align: center; }
-        #qrcode-wrapper { position: relative; display: inline-block; }
+        #qrcode-wrapper { position: relative; display: inline-block; margin-bottom: 25px; }
         #qrcode-container {
-            background: white; padding: 15px; border-radius: var(--border-radius);
-            border: 1px solid var(--border-color); display: flex;
-            align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px; /* Placeholder height */
         }
         #qrcode-signature {
-            display: none; font-size: 14px; font-weight: 600;
-            color: var(--text-secondary); margin-top: 10px;
+            display: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 10px;
         }
-        .button-group { display: flex; flex-wrap:wrap; gap: 10px; margin-top: 25px; }
+        .button-group { display: flex; flex-wrap: wrap; gap: 10px; }
         .btn {
-            flex-grow: 1; padding: 12px 15px; font-size: 15px; font-family: 'Vazir';
-            border: none; border-radius: 8px; cursor: pointer;
+            flex-grow: 1;
+            padding: 12px 15px;
+            font-size: 15px;
+            font-family: 'Vazir', sans-serif;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             transition: all 0.2s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
         .btn-primary { background-color: var(--primary-color); color: white; }
         .btn-primary:hover:not(:disabled) { background-color: var(--primary-hover); }
         .btn-secondary { background-color: #E6EAF0; color: var(--text-primary); }
         .btn-secondary:hover:not(:disabled) { background-color: #D9DEE6; }
-        .btn:disabled { background-color: #f0f0f0; color: #aaa; cursor: not-allowed; transform: none !important; }
+        .btn:disabled { background-color: #f0f0f0; color: #aaa; cursor: not-allowed; }
 
-        /* History & Reader Styles */
-        .full-width-card { grid-column: 1 / -1; }
-        #history-list { list-style: none; padding: 0; margin: 0; max-height: 500px; overflow-y: auto; }
-        .history-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background-color 0.2s; }
+        /* --- History & Reader Styles --- */
+        #history-list-container { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        #history-list { list-style: none; }
+        .history-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background-color 0.2s; border-radius: 6px; margin-bottom: 5px; }
         .history-item:hover { background-color: #f8f9fa; }
-        .history-item .preview { width: 40px; height: 40px; border-radius: 4px; margin-left: 10px; flex-shrink: 0; }
-        .history-item .info { flex-grow: 1; overflow: hidden; }
+        .history-item .preview { width: 40px; height: 40px; border-radius: 4px; margin-left: 15px; flex-shrink: 0; }
         .history-item .info span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
-        .history-item .delete-btn { background: none; border: none; cursor: pointer; padding: 5px; flex-shrink: 0; }
-        .history-item .delete-btn svg { width:18px; height:18px; fill: #999; }
+        .history-item .delete-btn { margin-right: auto; background: none; border: none; cursor: pointer; padding: 5px; flex-shrink: 0; }
+        .history-item .delete-btn svg { width:18px; height:18px; fill: #aaa; transition: fill 0.2s; }
         .history-item .delete-btn:hover svg { fill: var(--danger-color); }
-        .placeholder-text { font-size: 14px; color: var(--text-secondary); }
+        .placeholder-text { text-align: center; font-size: 14px; color: var(--text-secondary); padding: 20px; }
         
-        #reader-results { width: 100%; padding: 20px; border: 1px dashed var(--border-color); border-radius: 8px; min-height: 100px; word-wrap: break-word; }
-        #decoded-data { font-size: 16px; background-color: #F9FAFB; padding: 10px; border-radius: 6px; white-space: pre-wrap; user-select: text; margin-top: 15px; }
+        #reader-results { margin-top: 20px; }
+        #decoded-data { font-size: 16px; background-color: #F9FAFB; padding: 15px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; user-select: text; margin-top: 15px; text-align: right; line-height: 1.8; }
         
-        /* Sync Styles */
-        #sync-controls { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); }
-        #sync-status { margin-top: 10px; font-size: 14px; text-align: center; }
-        #receiver-form { display: none; }
+        /* --- Sync Styles --- */
+        #sync-controls { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); }
+        #sync-status { margin-top: 15px; font-size: 14px; text-align: center; color: var(--text-secondary); }
+        #receiver-form { display: none; margin-top: 15px; }
 
-        /* Toast Notification */
+        /* --- Toast Notification --- */
         .toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 1000; }
         .toast {
-            background-color: rgba(20, 20, 20, 0.9); color: white;
-            padding: 12px 20px; border-radius: 8px;
+            background-color: rgba(20, 20, 20, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             animation: toast-in 0.5s ease, toast-out 0.5s ease 2.5s forwards;
         }
         @keyframes toast-in { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes toast-out { from { transform: translateY(0); opacity: 1; } to { transform: translateY(100px); opacity: 0; } }
+        @keyframes toast-out { from { opacity: 1; } to { opacity: 0; } }
 
-        /* Responsive */
-        @media (max-width: 1200px) {
-            #generator-grid { grid-template-columns: minmax(320px, 1.5fr) minmax(300px, 1fr); }
-            .history-panel { grid-row: 2; grid-column: 1 / -1; }
-        }
+        /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .app-wrapper { flex-direction: column-reverse; }
-            .sidebar { width: 100%; height: 60px; flex-direction: row; justify-content: space-around; border-top: 1px solid var(--border-color); border-left: none; }
+            .main-content { padding: 15px; }
+            .sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                justify-content: space-around;
+                border-top: 1px solid var(--border-color);
+                border-left: none;
+                padding: 0;
+            }
             .sidebar-logo { display: none; }
-            .nav-item button.active::before { width: 60%; height: 3px; top: 0; right: 50%; transform: translateX(50%); border-radius: 0 0 3px 3px; }
-            .main-content { padding: 20px; }
-            #generator-grid { grid-template-columns: 1fr; }
+            .nav-item button.active::before {
+                width: 50px;
+                height: 3px;
+                top: 0;
+                right: 50%;
+                transform: translateX(50%);
+                border-radius: 0 0 3px 3px;
+            }
+            .page-header h1 { font-size: 24px; }
+            .card { padding: 15px; }
         }
     </style>
 </head>
@@ -281,29 +356,8 @@
 
         <main class="main-content">
             <div id="generator-view" class="view-content active">
-                <header class="page-header"><h1>تولید کننده QR Code</h1></header>
+                <header class="page-header"><h1>مولد پیشرفته QR Code</h1></header>
                 <div id="generator-grid" class="content-grid">
-                    <div class="card history-panel">
-                        <div class="card-header">
-                            تاریخچه
-                            <button id="sync-btn" class="btn btn-secondary" style="float:left; padding: 5px 10px; font-size: 14px;">همگام‌سازی</button>
-                        </div>
-                        <div id="sync-controls">
-                            <div class="button-group">
-                                <button id="send-btn" class="btn btn-primary">ارسال داده</button>
-                                <button id="receive-btn" class="btn btn-secondary">دریافت داده</button>
-                            </div>
-                            <div id="receiver-form" class="option-item" style="margin-top: 15px;">
-                                <label for="peer-id-input">کد ۶ رقمی را وارد کنید:</label>
-                                <input type="text" id="peer-id-input" maxlength="6" placeholder="مثلا 123456">
-                                <button id="connect-btn" class="btn btn-primary" style="margin-top:10px; width:100%;">اتصال</button>
-                            </div>
-                            <div id="sync-status"></div>
-                        </div>
-                        <div id="history-list-container">
-                             <ul id="history-list"><p class="placeholder-text" id="history-placeholder">تاریخچه‌ای یافت نشد.</p></ul>
-                        </div>
-                    </div>
                     <div class="card" id="editor-card">
                         <div class="card-header">محتوا و تنظیمات</div>
                         <div class="input-group">
@@ -312,11 +366,11 @@
                         <div class="form-section">
                             <div class="options-grid">
                                 <div class="option-item"><label for="dot-style">استایل نقطه‌ها</label><select id="dot-style"><option value="square">مربعی</option><option value="dots">نقطه‌ای</option><option value="rounded">گرد</option></select></div>
-                                <div class="option-item"><label for="correction-level">سطح تصحیح خطا</label><select id="correction-level"><option value="L">پایین</option><option value="M">متوسط</option><option value="Q">بالا</option><option value="H">بسیار بالا</option></select></div>
+                                <div class="option-item"><label for="correction-level">سطح تصحیح خطا</label><select id="correction-level"><option value="L">پایین</option><option value="M" selected>متوسط</option><option value="Q">بالا</option><option value="H">بسیار بالا</option></select></div>
                             </div>
                         </div>
                          <div class="form-section">
-                            <label class="option-item" for="logo-uploader">لوگو</label>
+                            <label class="option-item" for="logo-uploader">لوگو (اختیاری)</label>
                             <label for="logo-input" id="logo-uploader" class="logo-uploader"><span>برای آپلود لوگو کلیک کنید</span></label>
                             <input type="file" id="logo-input" accept="image/*">
                             <div class="logo-preview-container" id="logo-preview">
@@ -326,7 +380,7 @@
                             </div>
                         </div>
                         <div class="toggle-switch">
-                            <label for="signature-switch">افزودن امضای سایت</label>
+                            <label for="signature-switch">افزودن امضای سایت (qrite.ir)</label>
                             <label class="switch">
                                 <input type="checkbox" id="signature-switch">
                                 <span class="slider"></span>
@@ -336,31 +390,54 @@
                     <div class="card viewer-card" id="viewer-card">
                          <div class="card-header">پیش‌نمایش</div>
                          <div id="qrcode-wrapper">
-                             <div id="qrcode-container"><p class="placeholder-text" style="text-align:center;">کد شما اینجا نمایش داده می‌شود</p></div>
+                             <div id="qrcode-container"><p class="placeholder-text">کد شما اینجا نمایش داده می‌شود</p></div>
                              <div id="qrcode-signature">qrite.ir</div>
                          </div>
                          <div class="button-group">
                             <button id="download-png-btn" class="btn btn-primary" disabled>دانلود PNG</button>
                             <button id="download-svg-btn" class="btn btn-secondary" disabled>دانلود SVG</button>
+                         </div>
+                         <div class="button-group" style="margin-top:10px;">
                             <button id="share-btn" class="btn btn-secondary">اشتراک گذاری</button>
                          </div>
+                    </div>
+                     <div class="card history-panel">
+                        <div class="card-header">
+                            تاریخچه
+                            <button id="sync-btn" class="btn btn-secondary" style="padding: 5px 10px; font-size: 14px;">همگام‌سازی</button>
+                        </div>
+                        <div id="sync-controls" style="display: none;">
+                            <div class="button-group">
+                                <button id="send-btn" class="btn btn-primary">ارسال داده</button>
+                                <button id="receive-btn" class="btn btn-secondary">دریافت داده</button>
+                            </div>
+                            <div id="receiver-form" class="option-item" style="margin-top: 15px;">
+                                <label for="peer-id-input">کد ۶ رقمی دستگاه دیگر را وارد کنید:</label>
+                                <input type="text" id="peer-id-input" maxlength="6" placeholder="مثلا 123456">
+                                <button id="connect-btn" class="btn btn-primary" style="margin-top:10px; width:100%;">اتصال</button>
+                            </div>
+                            <div id="sync-status"></div>
+                        </div>
+                        <div id="history-list-container">
+                             <ul id="history-list"><p class="placeholder-text" id="history-placeholder">تاریخچه‌ای یافت نشد.</p></ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="reader-view" class="view-content">
-                <header class="page-header"><h1>خواندن</h1></header>
+                <header class="page-header"><h1>خواننده QR Code</h1></header>
                 <div class="card full-width-card">
                     <div class="button-group" style="justify-content:center; margin-top:0; margin-bottom:20px;">
                         <label for="file-input-reader" class="btn btn-primary">آپلود تصویر</label>
                         <input type="file" id="file-input-reader" accept="image/*" style="display:none;">
-                        <button id="camera-btn" class="btn btn-secondary">استفاده از وب‌کم</button>
+                        <button id="camera-btn" class="btn btn-secondary">استفاده از دوربین</button>
                     </div>
-                    <div id="video-container" style="display:none; border-radius: var(--border-radius); overflow:hidden;"><video id="video-feed" playsinline></video></div>
-                    <div id="reader-results" style="margin-top:20px;"><h3>نتیجه اسکن:</h3><div id="decoded-data"><p class="placeholder-text">منتظر اسکن یا آپلود تصویر...</p></div></div>
+                    <div id="video-container" style="display:none; border-radius: var(--border-radius); overflow:hidden; margin-top:20px;"><video id="video-feed" playsinline style="width:100%; height:auto;"></video></div>
+                    <div id="reader-results"><h3>نتیجه اسکن:</h3><div id="decoded-data"><p class="placeholder-text">منتظر اسکن یا آپلود تصویر...</p></div></div>
                 </div>
             </div>
-			<footer>طراحی و توسعه توسط <a href="https://www.linkedin.com/in/ramsinchaabian/">رامسین چعبیان</a></footer>
+			<footer style="text-align:center; margin-top:30px; font-size: 14px; color: var(--text-secondary);">طراحی و توسعه توسط <a href="https://www.linkedin.com/in/ramsinchaabian/" target="_blank" rel="noopener noreferrer" style="color:var(--primary-color); text-decoration:none;">رامسین چعبیان</a></footer>
         </main>
     </div>
     <div id="toast-container" class="toast-container"></div>
@@ -377,11 +454,8 @@
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.textContent = message;
-            if (type === 'success') {
-                toast.style.backgroundColor = 'var(--success-color)';
-            } else if (type === 'error') {
-                toast.style.backgroundColor = 'var(--danger-color)';
-            }
+            if (type === 'success') toast.style.backgroundColor = 'var(--success-color)';
+            if (type === 'error') toast.style.backgroundColor = 'var(--danger-color)';
             toastContainer.appendChild(toast);
             setTimeout(() => { toast.remove(); }, 3000);
         };
@@ -392,6 +466,7 @@
                 const targetView = button.dataset.view;
                 if (targetView === currentView) return;
                 if (currentView === 'reader-view') window.stopCamera?.();
+                
                 navButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 views.forEach(view => view.classList.remove('active'));
@@ -428,8 +503,8 @@
 
             const getQrOptions = () => ({
                 width: 300, height: 300, type: 'canvas', data: textInput.value.trim(),
-                margin: 0, image: logoImageBase64,
-                qrOptions: { errorCorrectionLevel: 'L' },
+                margin: 10, image: logoImageBase64,
+                qrOptions: { errorCorrectionLevel: correctionLevelSelect.value, mode: 'Byte' },
                 dotsOptions: { color: '#000000', type: dotStyleSelect.value },
                 backgroundOptions: { color: '#ffffff' },
                 imageOptions: { crossOrigin: 'anonymous', margin: 4, imageSize: 0.3 }
@@ -450,7 +525,7 @@
                 if (!options) options = getQrOptions();
                 
                 if (!options.data) {
-                    qrcodeContainer.innerHTML = `<p class="placeholder-text" style="text-align:center; margin:auto;">کد شما اینجا نمایش داده می‌شود</p>`;
+                    qrcodeContainer.innerHTML = `<p class="placeholder-text">کد شما اینجا نمایش داده می‌شود</p>`;
                     [downloadPngBtn, downloadSvgBtn, shareBtn].forEach(b => b.disabled = true);
                     qrCode = null;
                     return;
@@ -464,7 +539,7 @@
                     [downloadPngBtn, downloadSvgBtn, shareBtn].forEach(b => b.disabled = false);
                     updateSignatureVisibility();
                 } catch(error) {
-                    qrcodeContainer.innerHTML = `<p class="placeholder-text" style="color:var(--danger-color);text-align:center;margin:auto;">خطا: متن بیش از حد طولانی است.</p>`;
+                    qrcodeContainer.innerHTML = `<p class="placeholder-text" style="color:var(--danger-color);">خطا: متن بیش از حد طولانی است.</p>`;
                     [downloadPngBtn, downloadSvgBtn, shareBtn].forEach(b => b.disabled = true);
                     qrCode = null;
                 }
@@ -512,23 +587,21 @@
 
                 try {
                     if (!signatureSwitch.checked) {
-                        qrCode.download({ name: 'qrite', extension: extension });
+                        await qrCode.download({ name: 'qrite', extension: extension });
                         return;
                     }
-
+                    
+                    // Create a composite image for download with signature
                     const rawData = await qrCode.getRawData('png');
-                    if (!rawData) {
-                        showToast("خطا در دریافت داده‌های QR Code.", 'error');
-                        return;
-                    }
+                    if (!rawData) throw new Error("Could not get QR code data.");
 
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     const qrImage = new Image();
-
+                    
                     await new Promise((resolve, reject) => {
                         qrImage.onload = () => {
-                            const qrSize = 250;
+                            const qrSize = 300;
                             const padding = 20;
                             const fontSize = 18;
                             const textHeight = 40;
@@ -548,7 +621,6 @@
                             resolve();
                         };
                         qrImage.onerror = reject;
-
                         qrImage.src = URL.createObjectURL(rawData);
                     });
 
@@ -556,11 +628,12 @@
                     link.download = `qrite-signed.${extension}`;
                     
                     if (extension === 'svg') {
-                        const svgContent = `
-                            <svg width="${canvas.width}" height="${canvas.height}" xmlns="http://www.w3.org/2000/svg">
-                                <image href="${canvas.toDataURL('image/png')}" width="${canvas.width}" height="${canvas.height}"/>
-                            </svg>`;
-                        link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgContent);
+                        const svgDataUrl = 'data:image/svg+xml;base64,' + btoa(
+                            `<svg width="${canvas.width}" height="${canvas.height}" xmlns="http://www.w3.org/2000/svg">` +
+                            `<image href="${canvas.toDataURL('image/png')}" width="${canvas.width}" height="${canvas.height}"/>` +
+                            `</svg>`
+                        );
+                        link.href = svgDataUrl;
                     } else {
                         link.href = canvas.toDataURL('image/png');
                     }
@@ -590,7 +663,7 @@
                 const history = getHistory();
                 historyList.innerHTML = '';
                 if (history.length === 0) {
-                    historyList.innerHTML = '<p class="placeholder-text" style="padding:10px;text-align:center;">تاریخچه‌ای یافت نشد.</p>';
+                    historyList.innerHTML = '<p class="placeholder-text">تاریخچه‌ای یافت نشد.</p>';
                 } else {
                     history.forEach((item, index) => {
                         const li = document.createElement('li');
@@ -599,7 +672,7 @@
                         li.innerHTML = `<div class="preview"></div><div class="info"><span>${item.data}</span></div><button class="delete-btn" title="حذف از تاریخچه"><svg viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg></button>`;
                         historyList.appendChild(li);
                         const previewEl = li.querySelector('.preview');
-                        const previewOptions = {...item, width: 40, height: 40, margin: 0, image: null};
+                        const previewOptions = {...item, width: 40, height: 40, margin: 2, image: null};
                         new QRCodeStyling(previewOptions).append(previewEl);
                     });
                 }
@@ -630,13 +703,13 @@
                 }
             });
 
+            // --- Event Listeners ---
             textInput.addEventListener('input', handleStateChange);
             [dotStyleSelect, correctionLevelSelect, signatureSwitch].forEach(el => el.addEventListener('change', handleStateChange));
             logoInput.addEventListener('change', handleLogoUpload);
             removeLogoBtn.addEventListener('click', () => {
-                logoImageBase64 = null;
-                updateLogoUI(null);
-                generateOrUpdateQRCode(); // Use direct call for instant feedback
+                logoImageBase64 = null; updateLogoUI(null);
+                generateOrUpdateQRCode();
                 debouncedSaveToHistory();
                 showToast("لوگو حذف شد.");
             });
@@ -644,42 +717,16 @@
             downloadPngBtn.addEventListener('click', () => handleDownload('png'));
             downloadSvgBtn.addEventListener('click', () => handleDownload('svg'));
             
+            // --- Share Button Logic ---
             if (!navigator.share) {
                 shareBtn.style.display = 'none';
             } else {
                 shareBtn.addEventListener('click', async () => {
                     if (!qrCode) return;
                     try {
-                        let finalBlob;
-
-                        if (signatureSwitch.checked) {
-                            const rawData = await qrCode.getRawData('png');
-                            if (!rawData) return;
-                            
-                            finalBlob = await new Promise((resolve, reject) => {
-                                const canvas = document.createElement('canvas');
-                                const ctx = canvas.getContext('2d');
-                                const qrImage = new Image();
-                                qrImage.onload = () => {
-                                    const qrSize = 250, padding = 20, fontSize = 18, textHeight = 40;
-                                    canvas.width = qrSize + padding * 2; canvas.height = qrSize + padding * 2 + textHeight;
-                                    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                                    ctx.drawImage(qrImage, padding, padding, qrSize, qrSize);
-                                    ctx.fillStyle = '#7A8C99'; ctx.font = `600 ${fontSize}px Vazir`; ctx.textAlign = 'center';
-                                    ctx.fillText('qrite.ir', canvas.width / 2, qrSize + padding + textHeight / 1.5);
-                                    URL.revokeObjectURL(qrImage.src); 
-                                    canvas.toBlob(resolve, 'image/png');
-                                };
-                                qrImage.onerror = reject;
-                                qrImage.src = URL.createObjectURL(rawData);
-                            });
-                        } else {
-                            finalBlob = await qrCode.getRawData('png');
-                        }
-
-                        if (!finalBlob) return;
-
-                        const file = new File([finalBlob], 'qrite-qrcode.png', { type: 'image/png' });
+                        const rawData = await qrCode.getRawData('png');
+                        if (!rawData) return;
+                        const file = new File([rawData], 'qrite-qrcode.png', { type: 'image/png' });
                         await navigator.share({
                             title: 'QR Code by Qrite.ir',
                             text: `کد QR برای: ${textInput.value.substring(0, 50)}...`,
@@ -691,6 +738,7 @@
                 });
             }
             
+            // --- Initial Load ---
             renderHistory();
             generateOrUpdateQRCode();
         })();
@@ -709,24 +757,21 @@
             const resultsDiv = document.getElementById('decoded-data');
 
             const showReaderResult = (result) => {
-                let decodedString;
+                let decodedString = result.data;
                 try {
-                    const totalLength = result.chunks.reduce((acc, chunk) => acc + chunk.bytes.length, 0);
-                    const allBytes = new Uint8Array(totalLength);
-                    let offset = 0;
-                    for (const chunk of result.chunks) { allBytes.set(chunk.bytes, offset); offset += chunk.bytes.length; }
-                    decodedString = new TextDecoder('utf-8').decode(allBytes);
-                } catch (e) { decodedString = result.data; }
-                let contentHTML = `<div dir="auto">${decodedString.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
-                resultsDiv.innerHTML = contentHTML;
+                    const bytes = result.chunks.reduce((acc, chunk) => [...acc, ...chunk.bytes], []);
+                    decodedString = new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(bytes));
+                } catch (e) { /* Fallback to raw data if not valid UTF-8 */ }
+                
+                resultsDiv.innerHTML = `<div dir="auto">${decodedString.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+                 if (activeVideoStream) window.stopCamera();
             };
 
             const processQrCode = (code) => {
                 if (code) {
                     showReaderResult(code);
-                    if(activeVideoStream) window.stopCamera();
-                } else {
-                    if(!activeVideoStream) resultsDiv.innerHTML = `<p class="placeholder-text" style="color:var(--danger-color);">کدی یافت نشد.</p>`;
+                } else if (!activeVideoStream) {
+                    resultsDiv.innerHTML = `<p class="placeholder-text" style="color:var(--danger-color);">کدی یافت نشد.</p>`;
                 }
             };
             
@@ -745,11 +790,9 @@
 
             window.stopCamera = () => {
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                if (activeVideoStream) {
-                    activeVideoStream.getTracks().forEach(track => track.stop());
-                }
+                if (activeVideoStream) activeVideoStream.getTracks().forEach(track => track.stop());
                 videoContainer.style.display = 'none';
-                cameraBtn.textContent = 'استفاده از وب‌کم';
+                cameraBtn.textContent = 'استفاده از دوربین';
                 activeVideoStream = null;
             };
 
@@ -759,14 +802,13 @@
                 } else {
                     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
                     .then(stream => {
-                        activeVideoStream = stream;
-                        video.srcObject = stream;
-                        videoContainer.style.display = 'block';
-                        video.play();
+                        activeVideoStream = stream; video.srcObject = stream;
+                        videoContainer.style.display = 'block'; video.play();
                         cameraBtn.textContent = 'توقف دوربین';
                         resultsDiv.innerHTML = '<p class="placeholder-text">دوربین را به سمت QR Code بگیرید...</p>';
                         tick();
                     }).catch(err => {
+                        showToast('خطا در دسترسی به دوربین.', 'error');
                         resultsDiv.innerHTML = `<p class="placeholder-text" style="color:var(--danger-color);">خطا در دسترسی به دوربین.</p>`;
                     });
                 }
@@ -781,12 +823,11 @@
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
                         canvas.width = img.width; canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, img.width, img.height);
                         const imageData = ctx.getImageData(0, 0, img.width, img.height);
-                        const code = jsQR(imageData.data, imageData.width, imageData.height);
-                        processQrCode(code);
+                        processQrCode(jsQR(imageData.data, imageData.width, imageData.height));
                     };
                     img.src = event.target.result;
                 };
@@ -811,14 +852,9 @@
             let currentConn = null;
 
             const cleanupPeer = () => {
-                if (currentConn) {
-                    currentConn.close();
-                    currentConn = null;
-                }
-                if (peer) {
-                    peer.destroy();
-                    peer = null;
-                }
+                if (currentConn) currentConn.close();
+                if (peer) peer.destroy();
+                currentConn = peer = null;
             };
             
             syncBtn.addEventListener('click', () => {
@@ -829,7 +865,6 @@
                 cleanupPeer();
                 receiverForm.style.display = 'none';
                 const peerId = Math.floor(100000 + Math.random() * 900000).toString();
-                
                 peer = new Peer(peerId);
 
                 peer.on('open', (id) => {
@@ -839,91 +874,74 @@
                 peer.on('connection', (conn) => {
                     currentConn = conn;
                     syncStatus.textContent = 'دستگاه دیگر متصل شد. در حال ارسال داده...';
-                    
-                    conn.on('open', () => {
-                        const history = getHistory();
-                        conn.send(history);
-                    });
-
-                    conn.on('close', () => {
-                        syncStatus.textContent = 'اتصال بسته شد.';
-                        cleanupPeer();
-                    });
+                    conn.on('open', () => conn.send(getHistory()));
+                    conn.on('close', () => { syncStatus.textContent = 'اتصال بسته شد.'; cleanupPeer(); });
                 });
 
                 peer.on('error', (err) => {
-                    syncStatus.textContent = `خطا: ${err.message}`;
-                    showToast(`خطا در اتصال PeerJS: ${err.message}`, 'error');
+                    showToast(`خطا: ${err.type}`, 'error');
+                    syncStatus.textContent = `خطا در اتصال.`;
                     cleanupPeer();
                 });
             });
 
             receiveBtn.addEventListener('click', () => {
                 receiverForm.style.display = 'block';
-                syncStatus.textContent = 'لطفا کد را برای دریافت داده وارد کنید.';
+                syncStatus.textContent = 'کد ۶ رقمی را برای دریافت داده وارد کنید.';
             });
 
             connectBtn.addEventListener('click', () => {
                 cleanupPeer();
                 const remoteId = peerIdInput.value.trim();
-                if (!remoteId || remoteId.length !== 6) {
-                    showToast('لطفا یک کد ۶ رقمی معتبر وارد کنید.', 'error');
-                    return;
-                }
-
+                if (!/^\d{6}$/.test(remoteId)) return showToast('کد ۶ رقمی معتبر وارد کنید.', 'error');
+                
                 peer = new Peer();
+                connectBtn.disabled = true;
+                syncStatus.textContent = `در حال اتصال به ${remoteId}...`;
                 
                 peer.on('open', () => {
-                    syncStatus.textContent = `در حال اتصال به ${remoteId}...`;
-                    const conn = peer.connect(remoteId);
+                    const conn = peer.connect(remoteId, { reliable: true });
                     currentConn = conn;
 
-                    conn.on('open', () => {
-                        syncStatus.textContent = 'اتصال برقرار شد. منتظر دریافت داده...';
-                    });
-
+                    conn.on('open', () => { syncStatus.textContent = 'اتصال برقرار شد. منتظر دریافت داده...'; });
                     conn.on('data', (data) => {
                         syncStatus.textContent = 'داده دریافت شد. در حال ادغام...';
-                        
                         let localHistory = getHistory();
                         let remoteHistory = data;
-                        
                         const mergedHistory = [...localHistory];
                         const localTexts = new Set(localHistory.map(item => item.data));
                         
-                        remoteHistory.forEach(item => {
-                            if (!localTexts.has(item.data)) {
-                                mergedHistory.unshift(item);
-                            }
-                        });
-                        
+                        remoteHistory.forEach(item => { if (!localTexts.has(item.data)) mergedHistory.unshift(item); });
                         if (mergedHistory.length > 15) mergedHistory.length = 15;
                         
                         saveHistory(mergedHistory);
                         renderHistory();
-                        
-                        showToast('تاریخچه با موفقیت همگام‌سازی و ادغام شد.', 'success');
+                        showToast('تاریخچه با موفقیت همگام‌سازی شد.', 'success');
                         conn.close();
                     });
-
                     conn.on('close', () => {
                         syncStatus.textContent = 'اتصال با موفقیت به پایان رسید.';
+                        connectBtn.disabled = false;
                         cleanupPeer();
                     });
                 });
 
                  peer.on('error', (err) => {
-                    syncStatus.textContent = `خطا: ${err.message}`;
-                    showToast(`خطا در اتصال: ${err.message}`, 'error');
+                    showToast(`خطای اتصال: ${err.type}`, 'error');
+                    syncStatus.textContent = 'اتصال برقرار نشد. کد را بررسی کنید.';
+                    connectBtn.disabled = false;
                     cleanupPeer();
                 });
             });
         })();
+        
+        // --- Service Worker Registration ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.error("Service Worker registration failed: ", err));
+            });
+        }
     });
-
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
-    }
     </script>
 </body>
 </html>
