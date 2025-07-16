@@ -764,16 +764,11 @@
             const video = document.getElementById('video-feed');
             const resultsDiv = document.getElementById('decoded-data');
 
-            const showReaderResult = (result) => {
-                let decodedString = result.data;
-                try {
-                    const bytes = result.chunks.reduce((acc, chunk) => [...acc, ...chunk.bytes], []);
-                    decodedString = new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(bytes));
-                } catch (e) { /* Fallback to raw data if not valid UTF-8 */ }
-                
-                resultsDiv.innerHTML = `<div dir="auto">${decodedString.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
-                 if (activeVideoStream) window.stopCamera();
-            };
+           const showReaderResult = (result) => {
+                 const decodedString = result.data;
+  	          resultsDiv.innerHTML = `<div dir="auto">${decodedString.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+    		 if (activeVideoStream) window.stopCamera();
+	    };
 
             const processQrCode = (code) => {
                 if (code) {
