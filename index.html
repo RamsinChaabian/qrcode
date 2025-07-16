@@ -765,10 +765,27 @@
             const resultsDiv = document.getElementById('decoded-data');
 
            const showReaderResult = (result) => {
-                 const decodedString = result.data;
-  	          resultsDiv.innerHTML = `<div dir="auto">${decodedString.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
-    		 if (activeVideoStream) window.stopCamera();
-	    };
+    let decodedString = result.data;
+
+    if (!decodedString && result.binaryData) {
+        try {
+            decodedString = new TextDecoder('utf-8').decode(new Uint8Array(result.binaryData));
+        } catch (e) {
+            console.error("خطا در رمزگشایی داده‌های باینری:", e);
+            decodedString = `[داده باینری غیرقابل رمزگشایی: ${result.binaryData.toString()}]`;
+        }
+    }
+
+    if (decodedString) {
+        resultsDiv.innerHTML = `<div dir="auto">${decodedString.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+    } else {
+        resultsDiv.innerHTML = `<div>کد QR شناسایی شد اما محتوای آن قابل خواندن نیست.</div>`;
+    }
+
+    if (activeVideoStream) {
+        window.stopCamera();
+    }
+};
 
             const processQrCode = (code) => {
                 if (code) {
